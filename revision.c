@@ -3787,10 +3787,10 @@ static int commit_match(struct commit *commit, struct rev_info *opt)
 		strbuf_addstr(&buf, message);
 
 	if (opt->grep_filter.header_list && opt->mailmap) {
+		const char *commit_headers[] = { "author ", "committer ", NULL };
+
 		if (!buf.len)
 			strbuf_addstr(&buf, message);
-
-		const char *commit_headers[] = { "author ", "committer ", NULL };
 		apply_mailmap_to_header(&buf, commit_headers, opt->mailmap);
 	}
 

@@ -40,11 +40,14 @@ static const char *force_path;
 static struct string_list mailmap = STRING_LIST_INIT_NODUP;
 static int use_mailmap;
 
-char *replace_idents_using_mailmap(char *object_buf, size_t *size)
+static char *replace_idents_using_mailmap(char *, size_t *);
+
+static char *replace_idents_using_mailmap(char *object_buf, size_t *size)
 {
 	struct strbuf sb = STRBUF_INIT;
-	strbuf_attach(&sb, object_buf, *size, *size + 1);
 	const char *headers[] = { "author ", "committer ", "tagger ", NULL };
+
+	strbuf_attach(&sb, object_buf, *size, *size + 1);
 	apply_mailmap_to_header(&sb, headers, &mailmap);
 	*size = sb.len;
 	return strbuf_detach(&sb, NULL);
