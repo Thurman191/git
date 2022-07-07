@@ -3791,7 +3791,7 @@ static int commit_match(struct commit *commit, struct rev_info *opt)
 			strbuf_addstr(&buf, message);
 
 		const char *commit_headers[] = { "author ", "committer ", NULL };
-		commit_rewrite_person(&buf, commit_headers, opt->mailmap);
+		apply_mailmap_to_header(&buf, commit_headers, opt->mailmap);
 	}
 
 	/* Append "fake" message parts as needed */
