@@ -185,8 +185,13 @@ static int cat_one_file(int opt, const char *exp_type, const char *obj_name,
 		if (!buf)
 			die("Cannot read object %s", obj_name);
 
-		if (use_mailmap)
-			buf = replace_idents_using_mailmap(buf, &size);
+		if (use_mailmap) {
+			size_t s;
+
+			buf = replace_idents_using_mailmap(buf, &s);
+
+			size = cast_size_t_to_ulong(s);
+		}
 
 		/* otherwise just spit out the data */
 		break;
@@ -222,8 +227,13 @@ static int cat_one_file(int opt, const char *exp_type, const char *obj_name,
 		buf = read_object_with_reference(the_repository, &oid,
 						 exp_type_id, &size, NULL);
 
-		if (use_mailmap)
-			buf = replace_idents_using_mailmap(buf, &size);
+		if (use_mailmap) {
+			size_t s;
+
+			buf = replace_idents_using_mailmap(buf, &s);
+
+			size = cast_size_t_to_ulong(s);
+		}
 		break;
 	}
 	default:
@@ -392,8 +402,13 @@ static void print_object_or_die(struct batch_options *opt, struct expand_data *d
 
 		contents = read_object_file(oid, &type, &size);
 
-		if (use_mailmap)
-			contents = replace_idents_using_mailmap(contents, &size);
+		if (use_mailmap) {
+			size_t s;
+
+			contents = replace_idents_using_mailmap(contents, &s);
+
+			size = cast_size_t_to_ulong(s);
+		}
 
 		if (!contents)
 			die("object %s disappeared", oid_to_hex(oid));
